@@ -30,6 +30,8 @@
 import sys
 import os
 import xml.etree.ElementTree
+import subprocess
+import time
 
 copyright = '''\
 /* or1k-sprs.h -- OR1K SPR definitions
@@ -294,9 +296,18 @@ def gen_group(output, tree):
         else:
             raise Exception('invalid tag `{0:}\', expecting `reg\', `reg-range\', or `multi-reg-range\''.format(child.tag))
 
-def gen_root(output, root):
+def gen_root(output, root, gitrev):
+
+    gentime = time.strftime("%c")
+
+    if gitrev != None:
+        generated = "/*\n * Generated from revision %s *  on %s\n */\n" % (gitrev, gentime)
+    else:
+        generated = "/*\n * Generated on %s\n */\n" % (gentime)
 
     output.write(copyright)
+    output.write('\n')
+    output.write(generated)
     output.write('\n')
     output.write('#ifndef _OR1K_SPRS_H_\n')
     output.write('#define _OR1K_SPRS_H_\n')
@@ -333,12 +344,16 @@ if __name__ == '__main__':
         raise Exception('too many arguments')
     if len(sys.argv) > 1:
         xml_file = sys.argv[1]
+        dir = os.path.dirname(xml_file)
+        gitrev = subprocess.check_output("cd %s; git rev-parse HEAD" % dir, shell=True)
     else:
         xml_file = sys.stdin
+        gitrev = None
     
     root = xml.etree.ElementTree.parse(xml_file).getroot()
 
     if root.tag != "or1k-sprs":
         raise Exception('invalid root tag: `{0:}\''.format(root.tag))
 
-    gen_root(sys.stdout, root)
+
+    gen_root(sys.stdout, root, gitrev)

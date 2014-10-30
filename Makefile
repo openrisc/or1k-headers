@@ -11,7 +11,7 @@ CLEAN_FILES = \
 	include/or1k-sprs.h
 
 include/or1k-sprs.h: scripts/gen-or1k-sprs.py xml/or1k-sprs.xml
-	python scripts/gen-or1k-sprs.py < xml/or1k-sprs.xml > $@.tmp
+	python scripts/gen-or1k-sprs.py xml/or1k-sprs.xml > $@.tmp
 	mv -f $@.tmp $@
 
 install: $(include_HEADERS)
