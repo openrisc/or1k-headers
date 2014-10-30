@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- OR1K SPR definitions -->
+
+<!--
+
+  Copyright (c) 2014, OpenRISC Project Maintainers
+  Copyright (c) 2014, OpenCores.org
+
+  Contributed by Peter Gavin.
+
+  Redistribution and use in source and binary forms, with or
+  without modification, are permitted provided that the following
+  condition is met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+
+<or1k-sprs>
+
+  <group name="sys" index="0x00" description="System Group">
+
+    <reg name="vr" index="0x000" description="Version Register">
+      <field name="rev"    lsb="0" msb="5"   description="Revision"/>
+      <bit   name="uvrp"   offset="6"        description="Updated Version Registers Present"/>
+      <field name="cfg"    lsb="16" msb="23" description="Configuration Template"/>
+      <field name="ver"    lsb="24" msb="31" description="Version"/>
+    </reg>
+
+    <reg name="upr" index="0x001" description="Unit Present Register">
+      <bit   name="up"     offset="0"        description="UPR Present"/>
+      <bit   name="dcp"    offset="1"        description="Data Cache Present"/>
+      <bit   name="icp"    offset="2"        description="Instruction Cache Present"/>
+      <bit   name="dmp"    offset="3"        description="Data MMU Present"/>
+      <bit   name="imp"    offset="4"        description="Instruction MMU Present"/>
+      <bit   name="mp"     offset="5"        description="MAC Present"/>
+      <bit   name="dup"    offset="6"        description="Debug Unit Present"/>
+      <bit   name="pcup"   offset="7"        description="Performance Counters Unit Present"/>
+      <bit   name="picp"   offset="8"        description="Power Management Present"/>
+      <bit   name="pmp"    offset="9"        description="Programmable Interrupt Controller Present"/>
+      <bit   name="ttp"    offset="10"       description="Tick Timer Present"/>
+      <field name="cup"    lsb="24" msb="31" description="Custom Units Present"/>
+    </reg>
+
+    <reg name="cpucfgr" index="0x002" description="CPU Configuration Register">
+      <field name="nsgf"   lsb="0" msb="3"   description="Number of Shadow GPR Files"/>
+      <bit   name="cgf"    offset="4"        description="Custom GPR File"/>
+      <bit   name="ob32s"  offset="5"        description="ORBIS32 Supported"/>
+      <bit   name="ob64s"  offset="6"        description="ORBIS64 Supported"/>
+      <bit   name="of32s"  offset="7"        description="ORFPX32 Supported"/>
+      <bit   name="of64s"  offset="8"        description="ORFPX64 Supported"/>
+      <bit   name="ov64s"  offset="9"        description="ORVDX64 Supported"/>
+      <bit   name="nd"     offset="10"       description="No Delay-Slot"/>
+      <bit   name="avrp"   offset="11"       description="Architecture Version Register Present"/>
+      <bit   name="evbarp" offset="12"       description="Exception Vector Base Address Register Present"/>
+      <bit   name="isrp"   offset="13"       description="Implementation-Specific Registers (ISR0-7) Present"/>
+      <bit   name="aecsrp" offset="14"       description="Arithmetic Exception Control/Status Registers Present"/>
+    </reg>
+
+    <reg name="dmmucfgr" index="0x003"       description="Data MMU Configuration Register">
+      <field name="ntw"    lsb="0" msb="1"   description="Number of TLB Ways"/>
+      <field name="nts"    lsb="2" msb="4"   description="Number of TLB Sets"/>
+      <field name="nae"    lsb="5" msb="7"   description="Number of ATB Entries"/>
+      <bit   name="cri"    offset="8"        description="Control Register Implemented"/>
+      <bit   name="pri"    offset="9"        description="Protection Register Implemented"/>
+      <bit   name="teiri"  offset="10"       description="TLB Entry Invalidate Register Implemented"/>
+      <bit   name="htr"    offset="11"       description="Hardware TLB Reload"/>
+    </reg>
+
+    <reg name="immucfgr" index="0x004"       description="Instruction MMU Configuration Register">
+      <field name="ntw"    lsb="0" msb="1"   description="Number of TLB Ways"/>
+      <field name="nts"    lsb="2" msb="4"   description="Number of TLB Sets"/>
+      <field name="nae"    lsb="5" msb="7"   description="Number of ATB Entries"/>
+      <bit   name="cri"    offset="8"        description="Control Register Implemented"/>
+      <bit   name="pri"    offset="9"        description="Protection Register Implemented"/>
+      <bit   name="teiri"  offset="10"       description="TLB Entry Invalidate Register Implemented"/>
+      <bit   name="htr"    offset="11"       description="Hardware TLB Reload"/>
+    </reg>
+
+    <reg name="dccfgr" index="0x005"         description="Data Cache Configuration Register">
+      <field name="ncw"    lsb="0" msb="2"   description="Number of Cache Ways"/>
+      <field name="ncs"    lsb="3" msb="6"   description="Number of Cache Sets"/>
+      <bit   name="cbs"    offset="7"   description="Cache Block Size"/>
+      <bit   name="cws"    offset="8"   description="Cache Write Strategy"/>
+      <bit   name="ccri"   offset="9"   description="Cache Control Register Implemented"/>
+      <bit   name="cbiri"  offset="10"   description="Cache Block Invalidate Register Implemented"/>
+      <bit   name="cbpri"  offset="11"   description="Cache Block Prefetch Register Implemented"/>
+      <bit   name="cblri"  offset="12"   description="Cache Block Lock Register Implemented"/>
+      <bit   name="cbfri"  offset="13"   description="Cache Block Flush Register Implemented"/>
+      <bit   name="cbwbri" offset="14"   description="Cache Block Write-back Register Implemented"/>
+    </reg>
+
+    <reg name="iccfgr" index="0x006"         description="Instruction Cache Configuration Register">
+      <field name="ncw"    lsb="0" msb="2"   description="Number of Cache Ways"/>
+      <field name="ncs"    lsb="3" msb="6"   description="Number of Cache Sets"/>
+      <bit   name="cbs"    offset="7"   description="Cache Block Size"/>
+      <bit   name="ccri"   offset="9"   description="Cache Control Register Implemented"/>
+      <bit   name="cbiri"  offset="10"   description="Cache Block Invalidate Register Implemented"/>
+      <bit   name="cbpri"  offset="11"   description="Cache Block Prefetch Register Implemented"/>
+      <bit   name="cblri"  offset="12"   description="Cache Block Lock Register Implemented"/>
+    </reg>
+
+    <reg name="dcfgr" index="0x007"    description="Debug Configuration Register">
+      <field name="ndp"    lsb="0" msb="2"   description="Number of Debug Pairs"/>
+      <bit   name="wpci"   offset="3"   description="Watchpoint Counters Implemented"/>
+    </reg>
+
+    <reg name="pccfgr" index="0x008"    description="Performance Counters Configuration">
+      <field name="npc"    lsb="0" msb="2"   description="Number of Performance Counters"/>
+    </reg>
+
+    <reg name="vr2" index="0x009"    description="Version Register 2">
+      <field name="ver"    lsb="0" msb="23"   description="Version"/>
+      <field name="cpuid"  lsb="24" msb="31"   description="CPU Identification Number"/>
+    </reg>
+
+    <reg name="avr" index="0x00a"    description="Architecture Version Register">
+      <field name="rev"    lsb="8"  msb="15"   description="Major Architecture Version Number"/>
+      <field name="min"    lsb="16" msb="23"   description="Minor Architecture Version Number"/>
+      <field name="maj"    lsb="24" msb="31"   description="Architecture Revision Number"/>
+    </reg>
+
+    <reg name="evbar" index="0x00b"    description="Exception Vector Base Address Register">
+      <field name="evba"   lsb="13" msb="31"   description="Exception Vector Base Address"/>
+    </reg>
+
+    <reg name="aecr" index="0x00c"    description="Arithmetic Exception Control Register">
+      <bit   name="cyadde" offset="0"   description="Carry on Add Exception Enabled"/>
+      <bit   name="ovadde" offset="1"   description="Overflow on Add Exception Enabled"/>
+      <bit   name="cymule" offset="2"   description="Carry on Multiply Exception Enabled"/>
+      <bit   name="ovmule" offset="3"   description="Overflow on Multiply Exception Enabled"/>
+      <bit   name="dbze"   offset="4"   description="Divide by Zero Exception Enabled"/>
+      <bit   name="cymacadde" offset="5"   description="Carry on MAC Addition Exception Enabled"/>
+      <bit   name="ovmacadde" offset="6"   description="Overflow on MAC Addition Exception Enabled"/>
+    </reg>
+
+    <reg name="aesr" index="0x00d"    description="Arithmetic Exception Status Register">
+      <bit   name="cyadde" offset="0"   description="Carry on Add Exception"/>
+      <bit   name="ovadde" offset="1"   description="Overflow on Add Exception"/>
+      <bit   name="cymule" offset="2"   description="Carry on Multiply Exception"/>
+      <bit   name="ovmule" offset="3"   description="Overflow on Multiply Exception"/>
+      <bit   name="dbze"   offset="4"   description="Divide by Zero Exception"/>
+      <bit   name="cymacadde" offset="5"   description="Carry on MAC Addition Exception"/>
+      <bit   name="ovmacadde" offset="6"   description="Overflow on MAC Addition Exception"/>
+    </reg>
+
+    <reg name="npc" index="0x010"   description="Next Program Counter"/>
+
+    <reg name="sr" index="0x011"    description="Supervision Register">
+      <bit   name="sm"     offset="0"   description="Supervisor Mode"/>
+      <bit   name="tee"    offset="1"   description="Tick Timer Exception Enabled"/>
+      <bit   name="iee"    offset="2"   description="Interrupt Exception Enabled"/>
+      <bit   name="dce"    offset="3"   description="Data Cache Enabled"/>
+      <bit   name="ice"    offset="4"   description="Instruction Cache Enabled"/>
+      <bit   name="dme"    offset="5"   description="Data MMU Enabled"/>
+      <bit   name="ime"    offset="6"   description="Instruction MMU Enabled"/>
+      <bit   name="lee"    offset="7"   description="Little Endian Enabled"/>
+      <bit   name="ce"     offset="8"   description="CID Enable"/>
+      <bit   name="f"      offset="9"   description="Flag"/>
+      <bit   name="cy"     offset="10"   description="Carry"/>
+      <bit   name="ov"     offset="11"   description="Overflow"/>
+      <bit   name="ove"    offset="12"   description="Overflow Exception Enabled"/>
+      <bit   name="dsx"    offset="13"   description="Delay-slot Exception"/>
+      <bit   name="eph"    offset="14"   description="Exception Prefix High"/>
+      <bit   name="fo"     offset="15"   description="Fixed One"/>
+      <bit   name="sumra"  offset="16"   description="SPR User Mode Read Access"/>
+      <field name="cid"    lsb="28" msb="31"   description="Context ID"/>
+    </reg>
+
+    <reg name="ppc" index="0x012"   description="Previous Program Counter"/>
+
+    <reg name="fpcsr" index="0x014"    description="Floating Point Control Status Register">
+      <bit   name="fpee"   offset="0"   description="Floating Point Exception Enabled"/>
+      <field name="rm"     lsb="1" msb="2" description="Rounding Mode"/>
+      <bit   name="ovf"    offset="3"   description="Overflow Flag"/>
+      <bit   name="unf"    offset="4"   description="Underflow Flag"/>
+      <bit   name="snf"    offset="5"   description="SNAN Flag"/>
+      <bit   name="qnf"    offset="6"   description="QNAN Flag"/>
+      <bit   name="zf"     offset="7"   description="Zero Flag"/>
+      <bit   name="ixf"    offset="8"   description="Inexact Flag"/>
+      <bit   name="ivf"    offset="9"   description="Invalid Flag"/>
+      <bit   name="inf"    offset="10"   description="Infinity Flag"/>
+      <bit   name="dzf"    offset="11"   description="Divide by Zero Flag"/>
+    </reg>
+
+    <reg-range name="isr" base="0x015" count="8" description="Implementation-specific Registers"/>
+
+    <reg-range name="epcr" base="0x020" count="16" description="Exception PC Registers"/>
+    <reg-range name="eear" base="0x030" count="16" description="Exception Effective Address Registers"/>
+    <reg-range name="esr" base="0x040"  count="16" description="Exception Supervision Registers">
+      <bit   name="sm"     offset="0"   description="Supervisor Mode"/>
+      <bit   name="tee"    offset="1"   description="Tick Timer Exception Enabled"/>
+      <bit   name="iee"    offset="2"   description="Interrupt Exception Enabled"/>
+      <bit   name="dce"    offset="3"   description="Data Cache Enabled"/>
+      <bit   name="ice"    offset="4"   description="Instruction Cache Enabled"/>
+      <bit   name="dme"    offset="5"   description="Data MMU Enabled"/>
+      <bit   name="ime"    offset="6"   description="Instruction MMU Enabled"/>
+      <bit   name="lee"    offset="7"   description="Little Endian Enabled"/>
+      <bit   name="ce"     offset="8"   description="CID Enable"/>
+      <bit   name="f"      offset="9"   description="Flag"/>
+      <bit   name="cy"     offset="10"   description="Carry"/>
+      <bit   name="ov"     offset="11"   description="Overflow"/>
+      <bit   name="ove"    offset="12"   description="Overflow Exception Enabled"/>
+      <bit   name="dsx"    offset="13"   description="Delay-slot Exception"/>
+      <bit   name="eph"    offset="14"   description="Exception Prefix High"/>
+      <bit   name="fo"     offset="15"   description="Fixed One"/>
+      <bit   name="sumra"  offset="16"   description="SPR User Mode Read Access"/>
+      <field name="cid"    lsb="28" msb="31"   description="Context ID"/>
+    </reg-range>
+
+    <reg-range name="gpr" base="0x0400" count="0x100" description="General Purpose Registers"/>
+
+  </group>
+
+  <group name="dmmu" index="0x01"    description="Data MMU Group">
+
+    <reg name="dmmucr" index="0x000"   description="Instruction MMU Control Register">
+      <bit   name="dtf"    offset="0"  description="DTLB Flush"/>
+      <field name="ptbp"   lsb="10" msb="31" description="Page Table Base Pointer"/>
+    </reg>
+
+    <reg name="dmmupr" index="0x001"   description="Data MMU Protection Register">
+      <bit   name="sre1" offset="0" description="Supervisor Read Enable 1"/>
+      <bit   name="swe1" offset="1" description="Supervisor Write Enable 1"/>
+      <bit   name="ure1" offset="2" description="User Read Enable 1"/>
+      <bit   name="uwe1" offset="3" description="User Write Enable 1"/>
+      <bit   name="sre2" offset="4" description="Supervisor Read Enable 2"/>
+      <bit   name="swe2" offset="5" description="Supervisor Write Enable 2"/>
+      <bit   name="ure2" offset="6" description="User Read Enable 2"/>
+      <bit   name="uwe2" offset="7" description="User Write Enable 2"/>
+      <bit   name="sre3" offset="8" description="Supervisor Read Enable 3"/>
+      <bit   name="swe3" offset="9" description="Supervisor Write Enable 3"/>
+      <bit   name="ure3" offset="10" description="User Read Enable 3"/>
+      <bit   name="uwe3" offset="11" description="User Write Enable 3"/>
+      <bit   name="sre4" offset="12" description="Supervisor Read Enable 4"/>
+      <bit   name="swe4" offset="13" description="Supervisor Write Enable 4"/>
+      <bit   name="ure4" offset="14" description="User Read Enable 4"/>
+      <bit   name="uwe4" offset="15" description="User Write Enable 4"/>
+      <bit   name="sre5" offset="16" description="Supervisor Read Enable 5"/>
+      <bit   name="swe5" offset="17" description="Supervisor Write Enable 5"/>
+      <bit   name="ure5" offset="18" description="User Read Enable 5"/>
+      <bit   name="uwe5" offset="19" description="User Write Enable 5"/>
+      <bit   name="sre6" offset="20" description="Supervisor Read Enable 6"/>
+      <bit   name="swe6" offset="21" description="Supervisor Write Enable 6"/>
+      <bit   name="ure6" offset="22" description="User Read Enable 6"/>
+      <bit   name="uwe6" offset="23" description="User Write Enable 6"/>
+      <bit   name="sre7" offset="24" description="Supervisor Read Enable 7"/>
+      <bit   name="swe7" offset="25" description="Supervisor Write Enable 7"/>
+      <bit   name="ure7" offset="26" description="User Read Enable 7"/>
+      <bit   name="uwe7" offset="27" description="User Write Enable 7"/>
+    </reg>
+
+    <reg name="dtlbeir" index="0x002" description="Data TLB Entry Invalidate Register"/>
+
+    <reg-range name="datbmr" base="0x004" count="4"   description="Data ATB Match Registers">
+      <bit   name="v"   offset="0"      description="Valid"/>
+      <field name="cid" lsb="1" msb="4" description="Context ID"/>
+      <bit   name="ps"  offset="5"      description="Page Size"/>
+      <field name="vpn" lsb="10" msb="31" description="Virtual Page Number"/>
+    </reg-range>
+
+    <reg-range name="datbtr" base="0x008" count="4"   description="Data ATB Translate Registers">
+      <bit   name="cc"  offset="0"        description="Cache Coherency"/>
+      <bit   name="ci"  offset="1"        description="Cache Inhibit"/>
+      <bit   name="wbc" offset="2"        description="Write-back Cache"/>
+      <bit   name="wom" offset="3"        description="Weakly-ordered Memory"/>
+      <bit   name="a"   offset="4"        description="Accessed"/>
+      <bit   name="d"   offset="5"        description="Dirty"/>
+      <bit   name="sre" offset="6"        description="Supervisor Read Enable"/>
+      <bit   name="swe" offset="7"        description="Supervisor Write Enable"/>
+      <bit   name="ure" offset="8"        description="User Read Enable"/>
+      <bit   name="uwe" offset="9"        description="User Write Enable"/>
+      <field name="ppn" lsb="10" msb="31" description="Physical Page Number"/>
+    </reg-range>
+
+    <multi-reg-range name="dtlbw" base="0x200" count="4" step="0x100" description="Data TLB">
+      <reg-range name="mr" base="0x00" count="0x80" description="Data TLB Match Registers">
+        <bit name="v"   offset="0"        description="Valid"/>
+        <bit name="pl1" offset="1"        description="Page Level 1"/>
+        <field name="cid" lsb="2" msb="5" description="Context ID"/>
+        <field name="lru" lsb="6" msb="7" description="Least Recently Used"/>
+        <field name="vpn" lsb="31" msb="31" description="Virtual Page Number"/>
+      </reg-range>
+      <reg-range name="tr" base="0x80" count="0x80" description="Data TLB Translate Registers">
+        <bit   name="cc"  offset="0"        description="Cache Coherency"/>
+        <bit   name="ci"  offset="1"        description="Cache Inhibit"/>
+        <bit   name="wbc" offset="2"        description="Write-back Cache"/>
+        <bit   name="wom" offset="3"        description="Weakly-ordered Memory"/>
+        <bit   name="a"   offset="4"        description="Accessed"/>
+        <bit   name="d"   offset="5"        description="Dirty"/>
+        <bit   name="ure" offset="6"        description="User Read Enable"/>
+        <bit   name="uwe" offset="7"        description="User Write Enable"/>
+        <bit   name="sre" offset="8"        description="Supervisor Read Enable"/>
+        <bit   name="swe" offset="9"        description="Supervisor Write Enable"/>
+        <field name="ppn" lsb="13" msb="31" description="Physical Page Number"/>
+      </reg-range>
+    </multi-reg-range>
+
+  </group>
+
+  <group name="immu" index="0x02"    description="Instruction MMU Group">
+
+    <reg name="immucr" index="0x000"   description="Instruction MMU Control Register">
+      <bit   name="itf"    offset="0"  description="ITLB Flush"/>
+      <field name="ptbp"   lsb="10" msb="31" description="Page Table Base Pointer"/>
+    </reg>
+
+    <reg name="immupr" index="0x001"   description="Instruction MMU Protection Register">
+      <bit   name="sxe1" offset="0" description="Supervisor Execute Enable 1"/>
+      <bit   name="uxe1" offset="1" description="User Execute Enable 1"/>
+      <bit   name="sxe2" offset="2" description="Supervisor Execute Enable 2"/>
+      <bit   name="uxe2" offset="3" description="User Execute Enable 2"/>
+      <bit   name="sxe3" offset="4" description="Supervisor Execute Enable 3"/>
+      <bit   name="uxe3" offset="5" description="User Execute Enable 3"/>
+      <bit   name="sxe4" offset="6" description="Supervisor Execute Enable 4"/>
+      <bit   name="uxe4" offset="7" description="User Execute Enable 4"/>
+      <bit   name="sxe5" offset="8" description="Supervisor Execute Enable 5"/>
+      <bit   name="uxe5" offset="9" description="User Execute Enable 5"/>
+      <bit   name="sxe6" offset="10" description="Supervisor Execute Enable 6"/>
+      <bit   name="uxe6" offset="11" description="User Execute Enable 6"/>
+      <bit   name="sxe7" offset="12" description="Supervisor Execute Enable 7"/>
+      <bit   name="uxe7" offset="13" description="User Execute Enable 7"/>
+    </reg>
+
+    <reg name="itlbeir" index="0x002" description="Instruction TLB Entry Invalidate Register"/>
+
+    <reg-range name="iatbmr" base="0x004" count="4"   description="Instruction ATB Match Registers">
+      <bit   name="v"   offset="0"      description="Valid"/>
+      <field name="cid" lsb="1" msb="4" description="Context ID"/>
+      <bit   name="ps"  offset="5"      description="Page Size"/>
+      <field name="vpn" lsb="10" msb="31" description="Virtual Page Number"/>
+    </reg-range>
+
+    <reg-range name="iatbtr" base="0x008" count="4"   description="Instruction ATB Translate Registers">
+      <bit   name="cc"  offset="0"        description="Cache Coherency"/>
+      <bit   name="ci"  offset="1"        description="Cache Inhibit"/>
+      <bit   name="wbc" offset="2"        description="Write-back Cache"/>
+      <bit   name="wom" offset="3"        description="Weakly-ordered Memory"/>
+      <bit   name="a"   offset="4"        description="Accessed"/>
+      <bit   name="d"   offset="5"        description="Dirty"/>
+      <bit   name="sre" offset="6"        description="Supervisor Execute Enable"/>
+      <bit   name="ure" offset="7"        description="User Execute Enable"/>
+      <field name="ppn" lsb="10" msb="31" description="Physical Page Number"/>
+    </reg-range>
+
+    <multi-reg-range name="itlbw" base="0x200" count="4" step="0x100" description="Instruction TLB">
+      <reg-range name="mr" base="0x00" count="0x80" description="Instruction TLB Match Registers">
+        <bit name="v"   offset="0"        description="Valid"/>
+        <bit name="pl1" offset="1"        description="Page Level 1"/>
+        <field name="cid" lsb="2" msb="5" description="Context ID"/>
+        <field name="lru" lsb="6" msb="7" description="Least Recently Used"/>
+        <field name="vpn" lsb="31" msb="31" description="Virtual Page Number"/>
+      </reg-range>
+      <reg-range name="tr" base="0x80" count="0x80" description="Instruction TLB Translate Registers">
+        <bit   name="cc"  offset="0"        description="Cache Coherency"/>
+        <bit   name="ci"  offset="1"        description="Cache Inhibit"/>
+        <bit   name="wbc" offset="2"        description="Write-back Cache"/>
+        <bit   name="wom" offset="3"        description="Weakly-ordered Memory"/>
+        <bit   name="a"   offset="4"        description="Accessed"/>
+        <bit   name="d"   offset="5"        description="Dirty"/>
+        <bit   name="uxe" offset="6"        description="User Execute Enable"/>
+        <bit   name="sxe" offset="7"        description="Supervisor Execute Enable"/>
+        <field name="ppn" lsb="13" msb="31" description="Physical Page Number"/>
+      </reg-range>
+    </multi-reg-range>
+
+  </group>
+
+  <group name="dcache" index="0x03"    description="Data Cache Group">
+    <reg name="dccr" index="0x000" description="Data Cache Control Register">
+      <field name="ew" lsb="0" msb="7" description="Enable Ways"/>
+    </reg>
+    <reg name="dcbpr" index="0x001" description="Data Cache Block Prefetch Register"/>
+    <reg name="dcbfr" index="0x002" description="Data Cache Block Flush Register"/>
+    <reg name="dcbir" index="0x003" description="Data Cache Block Invalidate Register"/>
+    <reg name="dcbwr" index="0x004" description="Data Cache Block Write-back Register"/>
+    <reg name="dcblr" index="0x005" description="Data Cache Block Lock Register"/>
+  </group>
+
+  <group name="icache" index="0x04"    description="Instruction Cache Group">
+    <reg name="iccr" index="0x000" description="Instruction Cache Control Register">
+      <field name="ew" lsb="0" msb="7" description="Enable Ways"/>
+    </reg>
+    <reg name="icbpr" index="0x001" description="Instruction Cache Block Prefetch Register"/>
+    <reg name="icbir" index="0x002" description="Instruction Cache Block Invalidate Register"/>
+    <reg name="icblr" index="0x003" description="Instruction Cache Block Lock Register"/>
+  </group>
+
+  <group name="mac" index="0x05"    description="Multiply and Accumulate Group">
+    <reg name="maclo" index="0x001" description="MAC Result Low Word"/>
+    <reg name="machi" index="0x002" description="MAC Result High Word"/>
+  </group>
+
+  <group name="debug" index="0x06"    description="Debug Group">
+    <reg-range name="dvr" base="0x000" count="8" description="Debug Value Registers"/>
+    <reg-range name="dcr" base="0x008" count="8" description="Debug Control Registers">
+      <bit   name="dp" offset="0"      description="DVR/DCR Present"/>
+      <field name="cc" lsb="1" msb="3" description="Compare Condition"/>
+      <bit   name="sc" offset="4"      description="Signed Comparison"/>
+      <field name="ct" lsb="5" msb="7" description="Compare To"/>
+    </reg-range>
+    <reg name="dmr1" index="0x010" description="Debug Mode Register 1">
+      <field name="cw0" lsb="0"  msb="1"  description="Chain Watchpoint 0"/>
+      <field name="cw1" lsb="2"  msb="3"  description="Chain Watchpoint 1"/>
+      <field name="cw2" lsb="4"  msb="5"  description="Chain Watchpoint 2"/>
+      <field name="cw3" lsb="6"  msb="7"  description="Chain Watchpoint 3"/>
+      <field name="cw4" lsb="9"  msb="9"  description="Chain Watchpoint 4"/>
+      <field name="cw5" lsb="10" msb="11" description="Chain Watchpoint 5"/>
+      <field name="cw6" lsb="12" msb="13" description="Chain Watchpoint 6"/>
+      <field name="cw7" lsb="14" msb="15" description="Chain Watchpoint 7"/>
+      <field name="cw8" lsb="16" msb="17" description="Chain Watchpoint 8"/>
+      <field name="cw9" lsb="18" msb="19" description="Chain Watchpoint 9"/>
+      <bit   name="st"  offset="22"       description="Single-step Trace"/>
+      <bit   name="bt"  offset="23"       description="Branch Trace"/>
+    </reg>
+    <reg name="dmr2" index="0x011" description="Debug Mode Register 2">
+      <bit   name="wce0" offset="0"        description="Watchpoint Counter Enable 0"/>
+      <bit   name="wce1" offset="1"        description="Watchpoint Counter Enable 1"/>
+      <field name="awtc" lsb="2"  msb="11" description="Assign Watchpoints to Counter"/>
+      <field name="wgb"  lsb="12" msb="21" description="Watchpoints Generating Breakpoint"/>
+      <field name="wbs"  lsb="22" msb="31" description="Watchpoints Breakpoint Status"/>
+    </reg>
+    <reg-range name="dcwr" base="0x0012" count="2" description="Debug Watchpoint Counter Registers">
+    </reg-range>
+    <reg name="dsr" index="0x014" description="Debug Stop Register">
+      <bit   name="rste"  offset="0"       description="Reset Exception"/>
+      <bit   name="busee" offset="1"       description="Bus Error Exception"/>
+      <bit   name="dpfe"  offset="2"       description="Data Page Fault Exception"/>
+      <bit   name="ipfe"  offset="3"       description="Instruction Page Fault Exception"/>
+      <bit   name="tte"   offset="4"       description="Tick Timer Exception"/>
+      <bit   name="ae"    offset="5"       description="Alignment Exception"/>
+      <bit   name="iie"   offset="6"       description="Illegal Instruction Exception"/>
+      <bit   name="inte"  offset="7"       description="Interrupt Exception"/>
+      <bit   name="dme"   offset="8"       description="DTLB Miss Exception"/>
+      <bit   name="ime"   offset="9"       description="ITLB Miss Exception"/>
+      <bit   name="re"    offset="10"      description="Range Exception"/>
+      <bit   name="sce"   offset="11"      description="System Call Exception"/>
+      <bit   name="fpe"   offset="12"      description="Floating Point Exception"/>
+      <bit   name="te"    offset="13"      description="Trap Exception"/>
+    </reg>
+    <reg name="drr" index="0x015" description="Debug Reason Register">
+      <bit   name="rste"  offset="0"       description="Reset Exception"/>
+      <bit   name="busee" offset="1"       description="Bus Error Exception"/>
+      <bit   name="dpfe"  offset="2"       description="Data Page Fault Exception"/>
+      <bit   name="ipfe"  offset="3"       description="Instruction Page Fault Exception"/>
+      <bit   name="tte"   offset="4"       description="Tick Timer Exception"/>
+      <bit   name="ae"    offset="5"       description="Alignment Exception"/>
+      <bit   name="iie"   offset="6"       description="Illegal Instruction Exception"/>
+      <bit   name="inte"  offset="7"       description="Interrupt Exception"/>
+      <bit   name="dme"   offset="8"       description="DTLB Miss Exception"/>
+      <bit   name="ime"   offset="9"       description="ITLB Miss Exception"/>
+      <bit   name="re"    offset="10"      description="Range Exception"/>
+      <bit   name="sce"   offset="11"      description="System Call Exception"/>
+      <bit   name="fpe"   offset="12"      description="Floating Point Exception"/>
+      <bit   name="te"    offset="13"      description="Trap Exception"/>
+    </reg>
+  </group>
+
+  <group name="perf" index="0x07"    description="Performance Counters Group">
+    <reg-range name="pccr" base="0x000" count="8" description="Performance Counters Count Registers"/>
+    <reg-range name="pcmr" base="0x008" count="8" description="Performance Counters Mode Registers">
+    </reg-range>
+  </group>
+
+  <group name="power" index="0x08"    description="Power Management Group">
+    <reg name="pmr" index="0x000" description="Power Management Register"/>
+  </group>
+
+  <group name="pic" index="0x09"    description="Programmable Interrupt Controller Group">
+    <reg name="picmr" index="0x000" description="PIC Mask Register"/>
+    <reg name="picsr" index="0x002" description="PIC Status Register"/>
+  </group>
+
+  <group name="tick" index="0x0a"    description="Tick Timer Group">
+    <reg name="ttmr" index="0x000" description="Tick Timer Mode Register"/>
+    <reg name="ttcr" index="0x001" description="Tick Timer Count Register"/>
+  </group>
+
+  <group name="fpu" index="0x0b"    description="Floating Point Unit Group">
+    <!-- empty -->
+  </group>
+
+</or1k-sprs>

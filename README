@@ -1,0 +1,10 @@
+This project contains header files for the OpenRISC architecture.
+
+The headers contain architectural definitions, such as constants
+related to SPRs, and so on.
+
+Type `make' to generate the headers, `make install' to install.
+
+Some headers (currently only or1k-sprs.h) are generated from XML
+tables.  These tables are contained under the xml/ directory.
+Generator scripts are contained under the scripts/ directory.
