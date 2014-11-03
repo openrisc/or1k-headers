@@ -30,6 +30,8 @@
 import sys
 import os
 import xml.etree.ElementTree
+import subprocess
+import time
 
 copyright = '''\
 /* or1k-sprs.h -- OR1K SPR definitions
@@ -82,8 +84,8 @@ def gen_bit(output, tree, group_name, reg_name):
 
     output.write('#define {0:}_OFFSET {1:d}\n'.format(prefix, offset))
     output.write('#define {0:}_MASK   0x{1:08x}\n'.format(prefix, mask))
-    output.write('#define {0:}_GET(X) (((X) >> {1:d}) & 1U)\n'.format(prefix, offset))
-    output.write('#define {0:}_SET(X, Y) (((X) & 0x{1:08x}U) | ((!!(Y)) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, offset))
+    output.write('#define {0:}_GET(X) (((X) >> {1:d}) & 0x1)\n'.format(prefix, offset))
+    output.write('#define {0:}_SET(X, Y) (((X) & OR1K_UNSIGNED(0x{1:08x})) | ((!!(Y)) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, offset))
     output.write('\n')
 
 def gen_field(output, tree, group_name, reg_name):
@@ -104,9 +106,9 @@ def gen_field(output, tree, group_name, reg_name):
     output.write('#define {0:}_LSB    {1:d}\n'.format(prefix, lsb))
     output.write('#define {0:}_MSB    {1:d}\n'.format(prefix, msb))
     output.write('#define {0:}_BITS   {1:d}\n'.format(prefix, bits))
-    output.write('#define {0:}_MASK   0x{1:08x}U\n'.format(prefix, mask))
-    output.write('#define {0:}_GET(X) (((X) >> {1:d}) & 0x{2:08x}U)\n'.format(prefix, lsb, ((1 << bits) - 1)))
-    output.write('#define {0:}_SET(X, Y) (((X) & 0x{1:08x}U) | ((Y) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, lsb))
+    output.write('#define {0:}_MASK   OR1K_UNSIGNED(0x{1:08x})\n'.format(prefix, mask))
+    output.write('#define {0:}_GET(X) (((X) >> {1:d}) & OR1K_UNSIGNED(0x{2:08x}))\n'.format(prefix, lsb, ((1 << bits) - 1)))
+    output.write('#define {0:}_SET(X, Y) (((X) & OR1K_UNSIGNED(0x{1:08x})) | ((Y) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, lsb))
     output.write('\n')
 
 def gen_reg(output, tree, group_name, group_index):
@@ -121,8 +123,8 @@ def gen_reg(output, tree, group_name, group_index):
 
     output.write('/* {} */\n'.format(tree.attrib['description']))
     
-    output.write('#define {0:}_INDEX 0x{1:03x}U\n'.format(prefix, index))
-    output.write('#define {0:}_ADDR  0x{1:04x}U\n'.format(prefix, addr))
+    output.write('#define {0:}_INDEX OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, index))
+    output.write('#define {0:}_ADDR  OR1K_UNSIGNED(0x{1:04x})\n'.format(prefix, addr))
     output.write('\n')
 
     for child in tree:
@@ -149,9 +151,9 @@ def gen_reg_range(output, tree, group_name, group_index, outer_ranges = []):
 
     output.write('/* {} */\n'.format(tree.attrib['description']))
     
-    output.write('#define {0:}_BASE     0x{1:03x}U\n'.format(prefix, base))
-    output.write('#define {0:}_COUNT    0x{1:03x}U\n'.format(prefix, count))
-    output.write('#define {0:}_STEP     0x{1:03x}U\n'.format(prefix, step))
+    output.write('#define {0:}_BASE     OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, base))
+    output.write('#define {0:}_COUNT    OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, count))
+    output.write('#define {0:}_STEP     OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, step))
 
     output.write('#define {0:}_INDEX(N) ({0:}_BASE + ((N) * {0:}_STEP))\n'.format(prefix))
     output.write('#define {0:}_ADDR(N)  (({1:}_{2:} << {1:}_GROUP_SHIFT) | {0:}_INDEX(N))\n'.format(prefix,
@@ -188,9 +190,9 @@ def gen_reg_range_in_multi(output, tree, group_name, group_index, ranges):
 
     output.write('/* {} */\n'.format(tree.attrib['description']))
     
-    output.write('#define {0:}_BASE  0x{1:03x}U\n'.format(prefix, base))
-    output.write('#define {0:}_COUNT 0x{1:03x}U\n'.format(prefix, count))
-    output.write('#define {0:}_STEP  0x{1:03x}U\n'.format(prefix, step))
+    output.write('#define {0:}_BASE  OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, base))
+    output.write('#define {0:}_COUNT OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, count))
+    output.write('#define {0:}_STEP  OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, step))
     output.write('\n')
 
     parent_args = ', '.join('N{:d}'.format(n) for n in xrange(len(ranges)))
@@ -235,9 +237,9 @@ def gen_multi_reg_range(output, tree, group_name, group_index, ranges):
 
     output.write('/* {} */\n'.format(tree.attrib['description']))
     
-    output.write('#define {0:}_BASE  0x{1:03x}U\n'.format(prefix, base))
-    output.write('#define {0:}_COUNT 0x{1:03x}U\n'.format(prefix, count))
-    output.write('#define {0:}_STEP  0x{1:03x}U\n'.format(prefix, step))
+    output.write('#define {0:}_BASE  OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, base))
+    output.write('#define {0:}_COUNT OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, count))
+    output.write('#define {0:}_STEP  OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, step))
 
     if len(ranges) > 0:
         parent_prefix = '{0:}_{1:}_{2:}'.format(namespace_prefix,
@@ -294,9 +296,18 @@ def gen_group(output, tree):
         else:
             raise Exception('invalid tag `{0:}\', expecting `reg\', `reg-range\', or `multi-reg-range\''.format(child.tag))
 
-def gen_root(output, root):
+def gen_root(output, root, gitrev):
+
+    gentime = time.strftime("%c")
+
+    if gitrev != None:
+        generated = "/*\n * Generated from revision %s *  on %s\n */\n" % (gitrev, gentime)
+    else:
+        generated = "/*\n * Generated on %s\n */\n" % (gentime)
 
     output.write(copyright)
+    output.write('\n')
+    output.write(generated)
     output.write('\n')
     output.write('#ifndef _OR1K_SPRS_H_\n')
     output.write('#define _OR1K_SPRS_H_\n')
@@ -307,6 +318,14 @@ def gen_root(output, root):
     output.write('#define {0:}_INDEX_BITS  {1:2d}\n'.format(namespace_prefix, index_bits))
     output.write('#define {0:}_INDEX_LSB   {1:2d}\n'.format(namespace_prefix, index_lsb))
     output.write('#define {0:}_INDEX_MSB   {1:2d}\n'.format(namespace_prefix, index_msb))
+    output.write('\n')
+
+    output.write('#ifdef __ASSEMBLER__\n')
+    output.write('#define OR1K_UNSIGNED(x) x\n')
+    output.write('#else\n')
+    output.write('#define OR1K_UNSIGNED(x) x##U\n')
+    output.write('#endif\n')
+
     output.write('\n')
     output.write('\n')
 
@@ -333,12 +352,16 @@ if __name__ == '__main__':
         raise Exception('too many arguments')
     if len(sys.argv) > 1:
         xml_file = sys.argv[1]
+        dir = os.path.dirname(xml_file)
+        gitrev = subprocess.check_output("cd %s; git rev-parse HEAD" % dir, shell=True)
     else:
         xml_file = sys.stdin
+        gitrev = None
     
     root = xml.etree.ElementTree.parse(xml_file).getroot()
 
     if root.tag != "or1k-sprs":
         raise Exception('invalid root tag: `{0:}\''.format(root.tag))
 
-    gen_root(sys.stdout, root)
+
+    gen_root(sys.stdout, root, gitrev)
