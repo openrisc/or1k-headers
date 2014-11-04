@@ -69,6 +69,21 @@ group_lsb = 11
 group_msb = 15
 group_bits = group_msb-group_lsb+1
 
+def gen_option(output, tree, prefix):
+    try:
+        name = tree.attrib['name']
+    except:
+        raise Exception('`option\' tag requires `name\' attribute')
+    try:
+        value = tree.attrib['value']
+    except:
+        raise Exception('`option\' tag requires `value\' attribute')
+
+    if 'description' in tree.attrib:
+        output.write('/* {} */\n'.format(tree.attrib['description']))
+    output.write('#define {0:}_{1:} {2:}\n'.format(prefix, name.upper(), int(value, 0)))
+
+
 def gen_bit(output, tree, group_name, reg_name):
     
     name = tree.attrib['name']
@@ -87,6 +102,13 @@ def gen_bit(output, tree, group_name, reg_name):
     output.write('#define {0:}_GET(X) (((X) >> {1:d}) & 0x1)\n'.format(prefix, offset))
     output.write('#define {0:}_SET(X, Y) (((X) & OR1K_UNSIGNED(0x{1:08x})) | ((!!(Y)) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, offset))
     output.write('\n')
+
+    for child in tree:
+        if child.tag == 'option':
+            gen_option(output, child, prefix)
+        else:
+            raise Exception('invalid tag `{0:}\', expecting `option\''.format(child.tag))
+
 
 def gen_field(output, tree, group_name, reg_name):
     
@@ -110,6 +132,12 @@ def gen_field(output, tree, group_name, reg_name):
     output.write('#define {0:}_GET(X) (((X) >> {1:d}) & OR1K_UNSIGNED(0x{2:08x}))\n'.format(prefix, lsb, ((1 << bits) - 1)))
     output.write('#define {0:}_SET(X, Y) (((X) & OR1K_UNSIGNED(0x{1:08x})) | ((Y) << {2:d}))\n'.format(prefix, mask ^ 0xffffffff, lsb))
     output.write('\n')
+
+    for child in tree:
+        if child.tag == 'option':
+            gen_option(output, child, prefix)
+        else:
+            raise Exception('invalid tag `{0:}\', expecting `option\''.format(child.tag))
 
 def gen_reg(output, tree, group_name, group_index):
     

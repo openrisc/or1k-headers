@@ -78,7 +78,10 @@
       <bit   name="cri"    offset="8"        description="Control Register Implemented"/>
       <bit   name="pri"    offset="9"        description="Protection Register Implemented"/>
       <bit   name="teiri"  offset="10"       description="TLB Entry Invalidate Register Implemented"/>
-      <bit   name="htr"    offset="11"       description="Hardware TLB Reload"/>
+      <bit   name="htr"    offset="11"       description="Hardware TLB Reload">
+	<option name="sw" value="0" description="DTLB reloaded in software" />
+	<option name="hw" value="1" description="DTLB reloaded in hardware" />
+      </bit>
     </reg>
 
     <reg name="immucfgr" index="0x004"       description="Instruction MMU Configuration Register">
@@ -88,14 +91,23 @@
       <bit   name="cri"    offset="8"        description="Control Register Implemented"/>
       <bit   name="pri"    offset="9"        description="Protection Register Implemented"/>
       <bit   name="teiri"  offset="10"       description="TLB Entry Invalidate Register Implemented"/>
-      <bit   name="htr"    offset="11"       description="Hardware TLB Reload"/>
+      <bit   name="htr"    offset="11"       description="Hardware TLB Reload">
+	<option name="sw" value="0" description="DTLB reloaded in software" />
+	<option name="hw" value="1" description="DTLB reloaded in hardware" />
+      </bit>
     </reg>
 
     <reg name="dccfgr" index="0x005"         description="Data Cache Configuration Register">
       <field name="ncw"    lsb="0" msb="2"   description="Number of Cache Ways"/>
       <field name="ncs"    lsb="3" msb="6"   description="Number of Cache Sets"/>
-      <bit   name="cbs"    offset="7"   description="Cache Block Size"/>
-      <bit   name="cws"    offset="8"   description="Cache Write Strategy"/>
+      <bit   name="cbs"    offset="7"   description="Cache Block Size">
+	<option name="16" value="0" description="16 Bytes" />
+	<option name="32" value="1" description="32 Bytes" />
+      </bit>
+      <bit   name="cws"    offset="8"   description="Cache Write Strategy">
+	<option name="wt" value="0" description="Write Through" />
+	<option name="wb" value="1" description="Write Back" />
+      </bit>
       <bit   name="ccri"   offset="9"   description="Cache Control Register Implemented"/>
       <bit   name="cbiri"  offset="10"   description="Cache Block Invalidate Register Implemented"/>
       <bit   name="cbpri"  offset="11"   description="Cache Block Prefetch Register Implemented"/>
@@ -107,7 +119,10 @@
     <reg name="iccfgr" index="0x006"         description="Instruction Cache Configuration Register">
       <field name="ncw"    lsb="0" msb="2"   description="Number of Cache Ways"/>
       <field name="ncs"    lsb="3" msb="6"   description="Number of Cache Sets"/>
-      <bit   name="cbs"    offset="7"   description="Cache Block Size"/>
+      <bit   name="cbs"    offset="7"   description="Cache Block Size">
+	<option name="16" value="0" description="16 Bytes" />
+	<option name="32" value="1" description="32 Bytes" />
+      </bit>
       <bit   name="ccri"   offset="9"   description="Cache Control Register Implemented"/>
       <bit   name="cbiri"  offset="10"   description="Cache Block Invalidate Register Implemented"/>
       <bit   name="cbpri"  offset="11"   description="Cache Block Prefetch Register Implemented"/>
@@ -185,7 +200,12 @@
 
     <reg name="fpcsr" index="0x014"    description="Floating Point Control Status Register">
       <bit   name="fpee"   offset="0"   description="Floating Point Exception Enabled"/>
-      <field name="rm"     lsb="1" msb="2" description="Rounding Mode"/>
+      <field name="rm"     lsb="1" msb="2" description="Rounding Mode">
+	<option name="nearest" value="0" description="Round to nearest" />
+	<option name="zero" value="1" description="Round to zero" />
+	<option name="infplus" value="2" description="Round to infinity+" />
+	<option name="infminus" value="3" description="Round to infinity-" />
+      </field>
       <bit   name="ovf"    offset="3"   description="Overflow Flag"/>
       <bit   name="unf"    offset="4"   description="Underflow Flag"/>
       <bit   name="snf"    offset="5"   description="SNAN Flag"/>
@@ -412,9 +432,26 @@
     <reg-range name="dvr" base="0x000" count="8" description="Debug Value Registers"/>
     <reg-range name="dcr" base="0x008" count="8" description="Debug Control Registers">
       <bit   name="dp" offset="0"      description="DVR/DCR Present"/>
-      <field name="cc" lsb="1" msb="3" description="Compare Condition"/>
+      <field name="cc" lsb="1" msb="3" description="Compare Condition">
+	<option name="masked" value="0" description="Masked" />
+	<option name="eq" value="1" description="Equal" />
+	<option name="lt" value="2" description="Less than" />
+	<option name="lte" value="3" description="Less than or equal" />
+	<option name="gt" value="4" description="Greater than" />
+	<option name="gte" value="5" description="Greater than or equal" />
+	<option name="neq" value="6" description="Not equal" />
+      </field>
       <bit   name="sc" offset="4"      description="Signed Comparison"/>
-      <field name="ct" lsb="5" msb="7" description="Compare To"/>
+      <field name="ct" lsb="5" msb="7" description="Compare To">
+	<option name="disabled" value="0" description="Comparison disabled" />
+	<option name="fea" value="1" description="Instruction fetch EA" />
+	<option name="lea" value="2" description="Load EA" />
+	<option name="sea" value="3" description="Store EA" />
+	<option name="ld" value="4" description="Load data" />
+	<option name="sd" value="5" description="Store data" />
+	<option name="lsea" value="6" description="Load/store EA" />
+	<option name="lsd" value="7" description="Load/store data" />
+      </field>
     </reg-range>
     <reg name="dmr1" index="0x010" description="Debug Mode Register 1">
       <field name="cw0" lsb="0"  msb="1"  description="Chain Watchpoint 0"/>
@@ -493,7 +530,12 @@
       <field name="tp" lsb="0"  msb="27"  description="Time Period"/>
       <bit name="ip" offset="28"  description="Interrupt Pending"/>
       <bit name="ie" offset="29"  description="Interrupt Enable"/>
-      <field name="mode" lsb="30"  msb="31"  description="Mode"/>
+      <field name="mode" lsb="30"  msb="31"  description="Mode">
+	<option name="disable" value="0x0"  description="Disabled"/>
+	<option name="restart" value="0x1"  description="Restart counting when TTMR[TP]==TTCR"/>
+	<option name="stop" value="0x2"  description="Stop counting when TTMR[TP]==TTCR"/>
+	<option name="continue" value="0x3"  description="Continue counting when TTMR[TP]==TTCR"/>
+      </field>
     </reg>
     <reg name="ttcr" index="0x001" description="Tick Timer Count Register"/>
   </group>
