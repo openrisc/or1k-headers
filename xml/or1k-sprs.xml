@@ -489,7 +489,12 @@
   </group>
 
   <group name="tick" index="0x0a"    description="Tick Timer Group">
-    <reg name="ttmr" index="0x000" description="Tick Timer Mode Register"/>
+    <reg name="ttmr" index="0x000" description="Tick Timer Mode Register">
+      <field name="tp" lsb="0"  msb="27"  description="Time Period"/>
+      <bit name="ip" offset="28"  description="Interrupt Pending"/>
+      <bit name="ie" offset="29"  description="Interrupt Enable"/>
+      <field name="mode" lsb="30"  msb="31"  description="Mode"/>
+    </reg>
     <reg name="ttcr" index="0x001" description="Tick Timer Count Register"/>
   </group>
 
