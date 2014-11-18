@@ -316,7 +316,7 @@
         <bit name="pl1" offset="1"        description="Page Level 1"/>
         <field name="cid" lsb="2" msb="5" description="Context ID"/>
         <field name="lru" lsb="6" msb="7" description="Least Recently Used"/>
-        <field name="vpn" lsb="31" msb="31" description="Virtual Page Number"/>
+        <field name="vpn" lsb="13" msb="31" description="Virtual Page Number"/>
       </reg-range>
       <reg-range name="tr" base="0x80" count="0x80" description="Data TLB Translate Registers">
         <bit   name="cc"  offset="0"        description="Cache Coherency"/>
@@ -386,7 +386,7 @@
         <bit name="pl1" offset="1"        description="Page Level 1"/>
         <field name="cid" lsb="2" msb="5" description="Context ID"/>
         <field name="lru" lsb="6" msb="7" description="Least Recently Used"/>
-        <field name="vpn" lsb="31" msb="31" description="Virtual Page Number"/>
+        <field name="vpn" lsb="13" msb="31" description="Virtual Page Number"/>
       </reg-range>
       <reg-range name="tr" base="0x80" count="0x80" description="Instruction TLB Translate Registers">
         <bit   name="cc"  offset="0"        description="Cache Coherency"/>
