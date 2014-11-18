@@ -184,7 +184,7 @@ def gen_reg_range(output, tree, group_name, group_index, outer_ranges = []):
     output.write('#define {0:}_STEP     OR1K_UNSIGNED(0x{1:03x})\n'.format(prefix, step))
 
     output.write('#define {0:}_INDEX(N) ({0:}_BASE + ((N) * {0:}_STEP))\n'.format(prefix))
-    output.write('#define {0:}_ADDR(N)  (({1:}_{2:} << {1:}_GROUP_LSB) | {0:}_INDEX(N))\n'.format(prefix,
+    output.write('#define {0:}_ADDR(N)  (({1:}_{2:}_GROUP << {1:}_GROUP_LSB) | {0:}_INDEX(N))\n'.format(prefix,
                                                                                                     namespace_prefix,
                                                                                                     group_name.upper()))
 
